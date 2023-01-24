@@ -1,0 +1,37 @@
+query AllActivities {
+  allActivities {
+    ...ActivityCard
+  }
+  # allActivityTickets {
+  #   ...ActivityTicket
+  # }
+}
+
+fragment ActivityCard on Activity {
+  id
+  title
+  description
+  price
+  kidPrice
+  day
+  month
+  fullMonth
+  age
+  duration
+  accessible
+  place
+  street
+  houseNumber
+  mapsLink
+  starsValue
+  reviewAmount
+  imageUrl
+  hostImg
+  joined1
+  joined2
+  joined3
+  bought
+  beginTime
+  endTime
+  ticketAmount
+}

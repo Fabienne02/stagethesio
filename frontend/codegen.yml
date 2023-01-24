@@ -1,0 +1,53 @@
+schema:
+  - http://localhost:4000/graphql
+  # - 'src/graphql/local/typeDefs.ts' # local schema
+overwrite: true
+watch: true
+
+generates:
+  # Generate schema for local introspection
+  src/graphql/generated/schema.json:
+    plugins:
+      - introspection:
+          minify: true
+
+  # Generate Apollo client helper typings
+  src/graphql/generated/apolloHelpers.ts:
+    documents:
+      - 'src/**/*.graphql'
+    plugins:
+      - typescript-apollo-client-helpers
+
+  # Get schemas from server
+  src/graphql/generated/schema.ts:
+    documents: 'src/**/**.graphql'
+    plugins:
+      - typescript
+      - typescript-resolvers
+
+  # Create operations based on queries
+  src/graphql/generated/operations.ts:
+    documents: 'src/**/**.graphql'
+    preset: import-types-preset
+    presetConfig:
+      typesPath: ./schema
+    plugins:
+      - typescript-operations
+    config:
+      preResolveTypes: true # Don't use Pick<>. More verbose, but types are removed on compile time.
+
+  # Wrap all operations in custom hooks with typed responses
+  src/graphql/generated/hooks.tsx:
+    documents: 'src/**/**.graphql'
+    preset: import-types-preset
+    presetConfig:
+      typesPath: ./operations
+    plugins:
+      - typescript-react-apollo
+    config:
+      withComponent: false
+      withHOC: false
+      withHooks: true
+      addDocBlocks: true
+      reactApolloVersion: 3
+      documentMode: documentNode # Don't generate gql output as it will create duplicate queries and Apollo VSCode plugin does not like that

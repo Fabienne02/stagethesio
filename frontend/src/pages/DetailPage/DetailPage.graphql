@@ -1,0 +1,36 @@
+query Activity($id: ID!) {
+  Activity(id: $id) {
+    id
+    title
+    description
+    price
+    kidPrice
+    day
+    month
+    fullMonth
+    age
+    duration
+    place
+    street
+    houseNumber
+    mapsLink
+    accessible
+    starsValue
+    reviewAmount
+    imageUrl
+    hostImg
+    joined1
+    joined2
+    joined3
+    bought
+    beginTime
+    endTime
+    ticketAmount
+  }
+}
+
+mutation ActivityState($id: ID!, $bought: Boolean!, $ticketAmount: Int) {
+  updateActivity(id: $id, bought: $bought, ticketAmount: $ticketAmount) {
+    ...ActivityCard
+  }
+}
